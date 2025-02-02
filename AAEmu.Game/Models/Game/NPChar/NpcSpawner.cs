@@ -12,6 +12,8 @@ using AAEmu.Game.Core.Managers.Id;
 using AAEmu.Game.Core.Managers.UnitManagers;
 using AAEmu.Game.Core.Managers.World;
 using AAEmu.Game.GameData;
+using AAEmu.Game.Models.Game.AI.v2.Behaviors.Common;
+using AAEmu.Game.Models.Game.AI.v2.Framework;
 using AAEmu.Game.Models.Game.Char;
 using AAEmu.Game.Models.Game.Items.Containers;
 using AAEmu.Game.Models.Game.Skills.Effects;
@@ -80,7 +82,6 @@ public class NpcSpawner : Spawner<Npc>
                 return;
             }
         }
-
         if (!CanSpawn())
             return;
 
@@ -99,6 +100,15 @@ public class NpcSpawner : Spawner<Npc>
         {
             Logger.Warn("Template is null. Cannot determine if NPC can be spawned.");
             return false;
+        }
+
+        // Checks if there is a NPC that is a corpse so it doesn`t respawn immediatly after being killed
+        if (SpawnedNpcs.TryGetValue(SpawnerId, out var npcs))
+        {
+            if (IsCorpse(npcs))
+            {
+                return false;
+            }
         }
 
         //if (Template.NpcSpawnerCategoryId != NpcSpawnerCategory.Autocreated)
@@ -152,6 +162,14 @@ public class NpcSpawner : Spawner<Npc>
             return true;
 
         return !IsPlayerInSpawnRadius();
+    }
+
+    /// <summary>
+    /// Checks if there is a NPC that is a corpse
+    /// </summary>
+    private bool IsCorpse(List<Npc> npcs)
+    {
+        return npcs.Any(npc => npc.IsDead);
     }
 
     /// <summary>
