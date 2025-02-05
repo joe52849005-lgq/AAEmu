@@ -118,7 +118,7 @@ public class LoginController : Singleton<LoginController>
                     var banned = reader.GetBoolean("banned");
                     if (banned)
                     {
-                        var banReason = reader.GetByte("ban_reason");
+                        var banReason = (byte)reader.GetUInt32("ban_reason");
                         connection.SendPacket(new ACLoginDeniedPacket(banReason));
                         return;
                     }
