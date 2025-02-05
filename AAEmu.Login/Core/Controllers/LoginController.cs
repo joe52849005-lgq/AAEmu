@@ -115,12 +115,11 @@ public class LoginController : Singleton<LoginController>
                         return;
                     }
 
-                    var banned = reader.GetInt32(reader.GetOrdinal("banned"));
-                    if (banned == 1)
+                    var banned = reader.GetBoolean("banned");
+                    if (banned)
                     {
-                        int banReasonInt = reader.GetInt32(reader.GetOrdinal("ban_reason"));
-                        byte banReasonByte = (byte)banReasonInt;
-                        connection.SendPacket(new ACLoginDeniedPacket(banReasonByte));
+                        var banReason = reader.GetByte("ban_reason");
+                        connection.SendPacket(new ACLoginDeniedPacket(banReason));
                         return;
                     }
 
