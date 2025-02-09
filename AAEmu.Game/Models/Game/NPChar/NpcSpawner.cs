@@ -12,8 +12,6 @@ using AAEmu.Game.Core.Managers.Id;
 using AAEmu.Game.Core.Managers.UnitManagers;
 using AAEmu.Game.Core.Managers.World;
 using AAEmu.Game.GameData;
-using AAEmu.Game.Models.Game.AI.v2.Behaviors.Common;
-using AAEmu.Game.Models.Game.AI.v2.Framework;
 using AAEmu.Game.Models.Game.Char;
 using AAEmu.Game.Models.Game.Items.Containers;
 using AAEmu.Game.Models.Game.Skills.Effects;
@@ -497,7 +495,7 @@ public class NpcSpawner : Spawner<Npc>
                 }
 
                 // Decreases the NPC count
-                DecreaseCount(npc);
+                //DecreaseCount(npc);
             }
         }
         catch (Exception ex)
@@ -623,7 +621,8 @@ public class NpcSpawner : Spawner<Npc>
                 // Despawns the NPC if it is not in combat
                 if (!npc.IsInBattle)
                 {
-                    Despawn(npc);
+                    //Despawn(npc);
+                    DecreaseCount(npc);
                     //Logger.Trace($"Despawned NPC {npc.ObjId}.");
                 }
                 else
